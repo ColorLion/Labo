@@ -2,7 +2,7 @@ import xlrd
 import os
 import openpyxl
 
-# global a
+# global
 # meta - column 순번, data type, 길이, null의 수
 meta = [[]]
 length = []
