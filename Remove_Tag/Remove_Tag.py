@@ -2,7 +2,7 @@ import codecs
 import os
 import re
 
-# Tag: Regular Expression
+# Tag: Regular Expression a
 TAG_RE = re.compile(r'<[^>]+>')
 
 '''

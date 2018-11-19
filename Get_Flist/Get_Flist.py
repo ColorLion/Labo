@@ -3,7 +3,7 @@ import os.path
 import sys
 import openpyxl
 
-# global variable
+# global variable a
 main_ho = []
 
 # 데이터 추출 함수
