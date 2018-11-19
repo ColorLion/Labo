@@ -4,7 +4,6 @@ import openpyxl
 import os
 import sys
 
-#test
 def search_xls(filename, fn, size):
 	# open excel
 	wb = xlrd.open_workbook(filename, formatting_info=True)
