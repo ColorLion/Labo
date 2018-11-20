@@ -1,6 +1,5 @@
 import xlrd
 import os.path
-import sys
 import openpyxl
 
 # 데이터 추출 함수
@@ -20,7 +19,7 @@ def extract_data(file, nob_dir, sla_dir):
     # 계급 판별 후 저장 파일 결정
     for i in range(1, ws.nrows):
         row = ws.row_values(i)
-        if ("奴" in row[18] or "婢" in row[18]):
+        if "奴" in row[18] or "婢" in row[18]:
             sla_output.append(row)
         else:
             nob_output.append(row)
