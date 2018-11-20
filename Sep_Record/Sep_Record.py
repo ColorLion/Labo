@@ -17,12 +17,27 @@ def extract_data(file, nob_dir, sla_dir):
     sla_output.append(ws.row_values(0))
 
     # 계급 판별 후 저장 파일 결정
+    class_flag = 1
     for i in range(1, ws.nrows):
+        print(i)
         row = ws.row_values(i)
-        if "奴" in row[18] or "婢" in row[18]:
-            sla_output.append(row)
+        if row[17] == "주호":                         # 호내 위상 확인
+            if "奴" in row[18] or "婢" in row[18]:
+                sla_output.append(row)
+                class_flag = 1                        # 노비인 경우 1
+            else:
+                nob_output.append(row)
+                class_flag = 0                        # 양인인 경우 0
         else:
-            nob_output.append(row)
+            if class_flag == 1:                       # 주호가 노비인 경우를 처리
+                sla_output.append(row)
+            else:
+                if "奴" in row[16] or "婢" in row[16]:# 주호가 노비가 아니지만 노비인 경우
+                    sla_output.append(row)
+                elif "奴" in row[18] or "婢" in row[18]:
+                    sla_output.append(row)
+                else:
+                    nob_output.append(row)
 
     # 저장
     save_file_nob = nob_dir + file.split('.')[0] + "_nob.xlsx"
