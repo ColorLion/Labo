@@ -44,6 +44,7 @@ def extract_data(file, nob_dir, sla_dir):
     save_file_sla = sla_dir + file.split('.')[0] + "_sla.xlsx"
     xlsx1.save(save_file_nob)
     xlsx2.save(save_file_sla)
+    #test
 
 def main():
     # 작업 위치 및 저장 위치 정의
