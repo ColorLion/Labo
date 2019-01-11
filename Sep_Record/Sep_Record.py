@@ -17,6 +17,13 @@ def extract_data(file, nob_dir, sla_dir):
     sla_output.append(ws.row_values(0))
 
     # 계급 판별 후 저장 파일 결정
+    for i in range(1, ws.nrows):
+        row = ws.row_values(i)
+        if "奴" in row[18] or "婢" in row[18]:
+            sla_output.append(row)
+        else:
+            nob_output.append(row)
+    '''
     class_flag = 1
     for i in range(1, ws.nrows):
         print(i)
@@ -38,13 +45,13 @@ def extract_data(file, nob_dir, sla_dir):
                     sla_output.append(row)
                 else:
                     nob_output.append(row)
+    '''
 
     # 저장
     save_file_nob = nob_dir + file.split('.')[0] + "_nob.xlsx"
     save_file_sla = sla_dir + file.split('.')[0] + "_sla.xlsx"
     xlsx1.save(save_file_nob)
     xlsx2.save(save_file_sla)
-    #test
 
 def main():
     # 작업 위치 및 저장 위치 정의
