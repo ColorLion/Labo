@@ -17,8 +17,9 @@ def extract_data(file, id_dir):
         a.append(i[11].value)   #통(번호)
         a.append(i[13].value)   #호(번호)
         a.append(i[14].value)   #hoid
-        a.append(i[16].value)   #주호
-        a.append(i[18].value)   #호내위상
+        #a.append(i[16].value)   #주호
+        #a.append(i[18].value)   #호내위상
+        a.append(i[20].value)   #직역
         a.append(i[23].value)   #성
         a.append(i[24].value)   #명
         a.append(i[25].value)   #연령, 추후 생년을 계산해야 함
