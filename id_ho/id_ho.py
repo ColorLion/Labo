@@ -18,8 +18,11 @@ def extract_data(file, mho_dir):
         if "주호" in row[17]:
             # 이순, 통, 호 자리수 변경
             # if str(row[8]) in r'\'':
-            if len(str(row[8]).split('.')[0]) == 1:
-                row[8] = "00" + str(row[8]).split('.')[0]
+            if type(row[8]) == float:
+                if len(str(row[8]).split('.')[0]) == 1:             # 이순
+                    row[8] = "00" + str(row[8]).split('.')[0]
+                elif len(str(row[8]).split('.')[0]) == 2:
+                    row[8] = "0" + str(row[8]).split('.')[0]
             else:
                 row[8] = "10" + str(row[8]).replace("\'", "")
             if len(str(row[11]).split('.')[0]) == 1:
