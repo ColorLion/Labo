@@ -9,10 +9,7 @@ def extract_data(file, mho_dir):
     mho_output = xlsx1.active
 
     ws = target.sheet_by_index(0)
-
-    mho_output.append(ws.row_values(0))
-
-    for i in range(1, ws.nrows):
+    for i in range(ws.nrows):
         row = ws.row_values(i)
         # 주호판정
         if "주호" in row[17]:
@@ -30,7 +27,6 @@ def extract_data(file, mho_dir):
             if len(str(row[13]).split('.')[0]) == 1:
                 row[13] = "0" + str(row[13]).split('.')[0]
             mho_output.append(row)
-
     save_file_mho = mho_dir + file.split('.')[0] + "_mho.xlsx"
     xlsx1.save(save_file_mho)
 

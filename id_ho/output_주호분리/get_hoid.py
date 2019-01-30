@@ -1,11 +1,7 @@
 import os.path
 import openpyxl
 
-def extract_data(file, id_dir):
-    # save file open
-    xlsx1 = openpyxl.Workbook()
-    hoid_output = xlsx1.active
-
+def extract_data(file, hoid_output):
     # target file open
     # 하나 배웠다, data_only안하면 cell에 써져있는 그대로 가져오고
     # data only하면 출력되는 모습 그대로 가져오는 듯 하다
@@ -36,14 +32,15 @@ def extract_data(file, id_dir):
         a.append(i[63].value)   # 외조명
         hoid_output.append(a)
 
-    save_file_hoid = id_dir + file.split('.')[0] + "_hoid.xlsx"
-    xlsx1.save(save_file_hoid)
-
 def main():
     # 작업 위치 및 저장 위치 정의
     work_dir = os.getcwd()
     print(work_dir + "현재 작업 위치")
     id_dir = work_dir + '\\' + "output_식별데이터" + '\\'
+
+    # save file open
+    xlsx1 = openpyxl.Workbook()
+    hoid_output = xlsx1.active
 
     # output 저장 폴더 확인
     if os.path.isdir(id_dir) == 0:
@@ -55,5 +52,9 @@ def main():
         if len(file.split('.')) == 2:
             if file.split('.')[1] == 'xlsx':
                 print(file)
-                extract_data(file, id_dir)
+                extract_data(file, hoid_output)
+
+    save_file_mho = id_dir + "mho_id.xlsx"
+    xlsx1.save(save_file_mho)
+
 main()
