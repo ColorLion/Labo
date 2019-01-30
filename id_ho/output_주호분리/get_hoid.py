@@ -12,15 +12,15 @@ def extract_data(file, hoid_output):
         # a.append(i[8].value)    #이순
         # a.append(i[11].value)   #통(번호)
         # a.append(i[13].value)   #호(번호)
-        a = [str(i[4].value).split('.')[0] + "-" + str(i[8].value.split('.')[0]) \
+        a = [str(i[4].value).split('.')[0] + str(i[2].value).split('.')[0] + "-" + str(i[8].value.split('.')[0]) \
              + str(i[11].value).split('.')[0] + str(i[13].value).split('.')[0]]  # hoid
         # a.append(i[16].value)   #주호
         # a.append(i[18].value)   #호내위상
         a.append(i[19].value) # 직역
         a.append(i[22].value) # 성
         a.append(i[23].value) # 명
-        if type(i[24].value) == int:
-            a.append(i[4].value - i[24].value)   # 출생년도
+        if type(i[24].value) == int: # 출생년도
+            a.append(i[4].value - i[24].value)
         else:
             a.append(i[24].value)
         a.append(i[26].value)   # 간지
