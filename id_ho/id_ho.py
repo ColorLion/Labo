@@ -22,13 +22,15 @@ def extract_data(file, mho_dir):
                     row[8] = "0" + str(row[8]).split('.')[0]
             else:
                 row[8] = "10" + str(row[8]).replace("\'", "")
+
             if type(row[11]) == float:   # 이순
                 if len(str(row[11]).split('.')[0]) == 1:    # 통
                     row[11] = "00" + str(row[11]).split('.')[0]
-                elif len(str(row[8]).split('.')[0]) == 2:
+                elif len(str(row[11]).split('.')[0]) == 2:
                     row[11] = "0" + str(row[11]).split('.')[0]
             else:
                 row[11] = "10" + str(row[11]).replace("\'", "")
+
             if type(row[13]) == float:   # 이순
                 if len(str(row[13]).split('.')[0]) == 1:    # 호
                     row[13] = "00" + str(row[13]).split('.')[0]
@@ -36,10 +38,7 @@ def extract_data(file, mho_dir):
                     row[13] = "0" + str(row[13]).split('.')[0]
             else:
                 row[13] = "10" + str(row[13]).replace("\'", "")
-            #if len(str(row[11]).split('.')[0]) == 1:    # 통
-            #    row[11] = "0" + str(row[11]).split('.')[0]
-            #if len(str(row[13]).split('.')[0]) == 1:    # 호
-            #    row[13] = "0" + str(row[13]).split('.')[0]
+
             mho_output.append(row)
     save_file_mho = mho_dir + file.split('.')[0] + "_mho.xlsx"
     xlsx1.save(save_file_mho)
