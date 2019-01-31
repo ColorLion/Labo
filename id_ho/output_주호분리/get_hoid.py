@@ -42,6 +42,10 @@ def main():
     xlsx1 = openpyxl.Workbook()
     hoid_output = xlsx1.active
 
+    # statics file open
+    xlsx2 = openpyxl.Workbook()
+    static_output = xlsx2.active
+
     # output 저장 폴더 확인
     if os.path.isdir(id_dir) == 0:
         os.mkdir(id_dir)
