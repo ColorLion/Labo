@@ -7,7 +7,7 @@ def extract_data(file, hoid_output, static_output):
     # data only하면 출력되는 모습 그대로 가져오는 듯 하다
     xlsx = openpyxl.load_workbook(filename=file, data_only=True)
     sheet = xlsx['Sheet']
-
+    #
     #static_first = ["file_name", "ALL", "평민 이상", "노비", "공백", "x포함"]
     static_count = [file, 0, 0, 0, 0, 0]
 
