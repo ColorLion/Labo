@@ -2,6 +2,7 @@ import os.path
 import xlrd
 import openpyxl
 
+
 def make_report(file, first_row, report_rows, mainho_rows, blank_rows):
     # 단성호적 파일 open
     target = xlrd.open_workbook(file, formatting_info=True)
@@ -14,8 +15,8 @@ def make_report(file, first_row, report_rows, mainho_rows, blank_rows):
     # 위치 저장
     location = file.split('.')[0][7:]
     location_code = file.split('.')[0][5:7]
-    #print(location)
-    #print(location_code)
+    # print(location)
+    # print(location_code)
 
     if location_code == '01':
         # 첫번 째 행에 위치 저장
@@ -137,6 +138,7 @@ def make_report(file, first_row, report_rows, mainho_rows, blank_rows):
         # 연도별 가족 구성원의 성, 본관의 빈칸 데이터
         blank_rows[7][j] = blank_counting(ws)
 
+
 def main_ho_counting(ws):
     result = 0
 
@@ -146,6 +148,7 @@ def main_ho_counting(ws):
             result += 1
 
     return result
+
 
 def blank_counting(ws):
     result = 0
@@ -157,6 +160,7 @@ def blank_counting(ws):
 
     return result
 
+
 def make_first_row(first_row, work_dir):
     files = os.listdir(work_dir)
 
@@ -167,6 +171,7 @@ def make_first_row(first_row, work_dir):
                     first_row.append(file.split('-')[0])
 
     return first_row
+
 
 def main():
     # 작업 위치 및 저장 위치 정의
@@ -197,7 +202,7 @@ def main():
             if file.split('.')[1] == 'xls':
                 print(file)
                 make_report(file, first_row, report_rows, mainho_rows, blank_rows)
-        
+
     # report 저장용 xlsx 파일
     xlsx = openpyxl.Workbook()
 
@@ -207,7 +212,7 @@ def main():
     report_1.append(first_row)
     for i in range(8):
         print(report_1.append(report_rows[i]))
-        
+
     # 연도별 파일의 주호 수 저장
     report_2 = xlsx.create_sheet()
     report_2.title = 'main_ho'
@@ -221,7 +226,8 @@ def main():
     report_3.append(first_row)
     for i in range(8):
         print(report_3.append(blank_rows[i]))
-        
+
     # report 파일 저장
-    xlsx.save(report_dir + '\\' +  "report.xlsx")
+    xlsx.save(report_dir + '\\' + "report.xlsx")
+
 main()
