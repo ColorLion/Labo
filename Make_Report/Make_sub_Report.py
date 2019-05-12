@@ -2,7 +2,6 @@ import os.path
 import xlrd
 import openpyxl
 
-
 def make_report(file):
     # 단성호적 파일 open
     target = xlrd.open_workbook(file, formatting_info=True)
