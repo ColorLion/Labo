@@ -17,7 +17,7 @@ def extract_data(file, hoid_output, static_output):
              + str(i[11].value).split('.')[0] + str(i[13].value).split('.')[0]]
         # 직역은 변경될 가능성이 있으니 지금은 배제하도록 하자
         #a.append(i[19].value) # 직역(한글)
-        a.append(i[22].value) # 성
+        a.append(i[22].value) # 성 
         a.append(i[23].value) # 명
         if type(i[24].value) == int: # 출생년도
             a.append(i[4].value - i[24].value)
