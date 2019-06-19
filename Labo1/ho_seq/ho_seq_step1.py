@@ -28,7 +28,7 @@ def extract_data(i, save_file):
     a.append(i[63].value)  # 외조명(한글)
     save_file.append(a)
 
-def extract_xlsx(file, main_hoid_output1, main_hoid_output2, other_hoid_output, static_output):
+def extract_xlsx(file, main_hoid_output1, main_hoid_output2, other_hoid_output, static_output, all_hoid_output):
     # target file open
     # 하나 배웠다, data_only안하면 cell에 써져있는 그대로 가져오고
     # data only하면 출력되는 모습 그대로 가져오는 듯 하다
@@ -47,6 +47,7 @@ def extract_xlsx(file, main_hoid_output1, main_hoid_output2, other_hoid_output, 
         else:
             # hoid
             extract_data(i, other_hoid_output)
+        extract_data(i, all_hoid_output)
 
         # static
         static_count[1] += 1
@@ -68,11 +69,13 @@ def main():
     main_id_dir = work_dir + '\\' + "output_mainho" + '\\'
     other_id_dir = work_dir + '\\' + "output_otherho" + '\\'
     static_id_dir = work_dir + '\\' + "output_static" + '\\'
+    all_id_dir = work_dir + '\\' + "output_all" + '\\'
 
     save_file_mho1 = main_id_dir + "mho_id.xlsx"
     save_file_mho2 = main_id_dir + "mho_id(garbage).xlsx"
     save_file_oth = other_id_dir + "oth_id.xlsx"
     save_file_static = static_id_dir + "statics_mho.xlsx"
+    save_file_all = all_id_dir + "all_id.xlsx"
 
     # save main ho file open
     xlsx1 = openpyxl.Workbook()
@@ -91,6 +94,9 @@ def main():
     xlsx4 = openpyxl.Workbook()
     main_hoid_output2 = xlsx4.active
 
+    xlsx5 = openpyxl.Workbook()
+    all_hoid_output = xlsx5.active
+
     # output 저장 폴더 확인
     if os.path.isdir(main_id_dir) == 0:
         os.mkdir(main_id_dir)
@@ -98,6 +104,8 @@ def main():
         os.mkdir(other_id_dir)
     if os.path.isdir(static_id_dir) == 0:
         os.mkdir(static_id_dir)
+    if os.path.isdir(all_id_dir) == 0:
+        os.mkdir(all_id_dir)
 
 
     files = os.listdir(work_dir)
@@ -106,12 +114,13 @@ def main():
         if len(file.split('.')) == 2:
             if file.split('.')[1] == 'xlsx':
                 print(file)
-                extract_xlsx(file, main_hoid_output1, main_hoid_output2, other_hoid_output, static_output)
+                extract_xlsx(file, main_hoid_output1, main_hoid_output2, other_hoid_output, static_output, all_hoid_output)
 
 
     xlsx1.save(save_file_mho1)
     xlsx2.save(save_file_oth)
     xlsx3.save(save_file_static)
     xlsx4.save(save_file_mho2)
+    xlsx5.save(save_file_all)
 
 main()
