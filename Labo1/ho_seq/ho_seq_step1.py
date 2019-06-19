@@ -1,63 +1,128 @@
-import xlrd
 import os.path
 import openpyxl
 
-def extract_data(file, mho_dir):
-    target = xlrd.open_workbook(file, formatting_info=True)
+def extract_data(file, main_hoid_output, other_hoid_output, static_output):
+    # target file open
+    # 하나 배웠다, data_only안하면 cell에 써져있는 그대로 가져오고
+    # data only하면 출력되는 모습 그대로 가져오는 듯 하다
+    xlsx = openpyxl.load_workbook(filename=file, data_only=True)
+    sheet = xlsx['Sheet']
 
-    xlsx1 = openpyxl.Workbook()
-    mho_output = xlsx1.active
+    #static_first = ["file_name", "ALL", "평민 이상", "노비", "공백", "x포함"]
+    static_count = [file, 0, 0, 0, 0, 0]
 
-    ws = target.sheet_by_index(0)
-    for i in range(ws.nrows):
-        row = ws.row_values(i)
-        # 주호판정
-        if "주호" in row[17]:
-            # 이순, 통, 호 자리수 변경
-            # if str(row[8]) in r'\'':
-            if type(row[8]) == float:   # 이순
-                if len(str(row[8]).split('.')[0]) == 1:
-                    row[8] = "00" + str(row[8]).split('.')[0]
-                elif len(str(row[8]).split('.')[0]) == 2:
-                    row[8] = "0" + str(row[8]).split('.')[0]
+    for i in sheet.rows:
+        if "주호" in str(i[17].value):
+            # hoid
+            a = [str(i[4].value).split('.')[0] + str(i[2].value).split('.')[0] + "-" + str(i[8].value.split('.')[0]) \
+                 + str(i[11].value).split('.')[0] + str(i[13].value).split('.')[0]]
+            # 직역은 변경될 가능성이 있으니 지금은 배제하도록 하자
+            #a.append(i[19].value) # 직역(한글)
+            a.append(i[17].value) # 호내위상
+            a.append(i[22].value) # 성
+            a.append(i[23].value) # 명
+            if type(i[24].value) == int: # 출생년도
+                a.append(i[4].value - i[24].value)
             else:
-                row[8] = "10" + str(row[8]).replace("\'", "")
-
-            if type(row[11]) == float:   # 이순
-                if len(str(row[11]).split('.')[0]) == 1:    # 통
-                    row[11] = "00" + str(row[11]).split('.')[0]
-                elif len(str(row[11]).split('.')[0]) == 2:
-                    row[11] = "0" + str(row[11]).split('.')[0]
+                a.append(i[24].value)
+            a.append(i[26].value)   # 간지(한글)
+            a.append(i[42].value)   # 주성명, 노비인 경우에 사용
+            a.append(i[45].value)   # 부명(한자)
+            a.append(i[46].value)   # 부명(한글)
+            a.append(i[49].value)   # 모명(한자)
+            a.append(i[50].value)   # 모명(한글)
+            a.append(i[54].value)   # 조명(한자)
+            a.append(i[55].value)   # 조명(한글)
+            a.append(i[58].value)   # 증조명(한자)
+            a.append(i[59].value)   # 증조명(한글)
+            a.append(i[62].value)   # 외조명(한글)
+            a.append(i[63].value)   # 외조명(한글)
+            main_hoid_output.append(a)
+        else:
+            # hoid
+            b = [str(i[4].value).split('.')[0] + str(i[2].value).split('.')[0] + "-" + str(i[8].value.split('.')[0]) \
+                 + str(i[11].value).split('.')[0] + str(i[13].value).split('.')[0]]
+            # 직역은 변경될 가능성이 있으니 지금은 배제하도록 하자
+            # a.append(i[19].value) # 직역(한글)
+            b.append(i[17].value)
+            b.append(i[22].value)  # 성
+            b.append(i[23].value)  # 명
+            if type(i[24].value) == int:  # 출생년도
+                b.append(i[4].value - i[24].value)
             else:
-                row[11] = "10" + str(row[11]).replace("\'", "")
+                b.append(i[24].value)
+            b.append(i[26].value)  # 간지(한글)
+            b.append(i[42].value)  # 주성명, 노비인 경우에 사용
+            b.append(i[45].value)  # 부명(한자)
+            b.append(i[46].value)  # 부명(한글)
+            b.append(i[49].value)  # 모명(한자)
+            b.append(i[50].value)  # 모명(한글)
+            b.append(i[54].value)  # 조명(한자)
+            b.append(i[55].value)  # 조명(한글)
+            b.append(i[58].value)  # 증조명(한자)
+            b.append(i[59].value)  # 증조명(한글)
+            b.append(i[62].value)  # 외조명(한글)
+            b.append(i[63].value)  # 외조명(한글)
+            other_hoid_output.append(b)
 
-            if type(row[13]) == float:   # 이순
-                if len(str(row[13]).split('.')[0]) == 1:    # 호
-                    row[13] = "00" + str(row[13]).split('.')[0]
-                elif len(str(row[8]).split('.')[0]) == 2:
-                    row[13] = "0" + str(row[13]).split('.')[0]
-            else:
-                row[13] = "10" + str(row[13]).replace("\'", "")
-
-            mho_output.append(row)
-    save_file_mho = mho_dir + file.split('.')[0] + "_mho.xlsx"
-    xlsx1.save(save_file_mho)
+        # static
+        static_count[1] += 1
+        job = i[18].value
+        if job == None:
+            static_count[4] += 1
+        elif '奴' in job or '婢' in job:
+            static_count[3] += 1
+        elif 'x' in job:
+            static_count[5] += 1
+        else:
+            static_count[2] += 1
+    static_output.append(static_count)
 
 def main():
     # 작업 위치 및 저장 위치 정의
     work_dir = os.getcwd()
     print(work_dir + "현재 작업 위치")
-    mho_dir = work_dir + '\\' + "output_주호분리" + '\\'
+    main_id_dir = work_dir + '\\' + "output_mainho" + '\\'
+    other_id_dir = work_dir + '\\' + "output_otherho" + '\\'
+    static_id_dir = work_dir + '\\' + "output_static" + '\\'
+
+
+    # save main ho file open
+    xlsx1 = openpyxl.Workbook()
+    main_hoid_output = xlsx1.active
+
+    # save other file open
+    xlsx2 = openpyxl.Workbook()
+    other_hoid_output = xlsx2.active
+
+    # statics file open
+    xlsx3 = openpyxl.Workbook()
+    static_output = xlsx3.active
+    static_first = ["file_name", "ALL", "평민 이상", "노비", "공백", "x포함"]
+    static_output.append(static_first)
 
     # output 저장 폴더 확인
-    if os.path.isdir(mho_dir) == 0:
-        os.mkdir(mho_dir)
+    if os.path.isdir(main_id_dir) == 0:
+        os.mkdir(main_id_dir)
+    if os.path.isdir(other_id_dir) == 0:
+        os.mkdir(other_id_dir)
+    if os.path.isdir(static_id_dir) == 0:
+        os.mkdir(static_id_dir)
+
 
     files = os.listdir(work_dir)
 
     for file in files:
         if len(file.split('.')) == 2:
-            if file.split('.')[1] == 'xls':
+            if file.split('.')[1] == 'xlsx':
                 print(file)
-                extract_data(file, mho_dir)
+                extract_data(file, main_hoid_output, other_hoid_output, static_output)
+
+    save_file_mho = main_id_dir + "mho_id.xlsx"
+    save_file_oth = other_id_dir + "oth_id.xlsx"
+    save_file_static = static_id_dir + "statics_mho.xlsx"
+    xlsx1.save(save_file_mho)
+    xlsx2.save(save_file_oth)
+    xlsx3.save(save_file_static)
+
 main()
