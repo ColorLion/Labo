@@ -1,7 +1,41 @@
 import os.path
 import openpyxl
 
+main_ho = []
+
 def extract_data(i, save_file):
+    # hoid
+    a = [str(i[4].value).split('.')[0] + str(i[2].value).split('.')[0] + "-" + str(i[8].value.split('.')[0]) \
+         + str(i[11].value).split('.')[0] + str(i[13].value).split('.')[0]]
+    # 직역은 변경될 가능성이 있으니 지금은 배제하도록 하자
+    # a.append(i[19].value) # 직역(한글)
+    a.append(i[17].value)  # 호내위상
+    a.append(i[22].value)  # 성
+    a.append(i[23].value)  # 명
+    if type(i[24].value) == int:  # 출생년도
+        a.append(i[4].value - i[24].value)
+    else:
+        a.append(i[24].value)
+    a.append(i[26].value)  # 간지(한글)
+    a.append(i[42].value)  # 주성명, 노비인 경우에 사용
+    a.append(i[45].value)  # 부명(한자)
+    a.append(i[46].value)  # 부명(한글)
+    a.append(i[49].value)  # 모명(한자)
+    a.append(i[50].value)  # 모명(한글)
+    a.append(i[54].value)  # 조명(한자)
+    a.append(i[55].value)  # 조명(한글)
+    a.append(i[58].value)  # 증조명(한자)
+    a.append(i[59].value)  # 증조명(한글)
+    a.append(i[62].value)  # 외조명(한글)
+    a.append(i[63].value)  # 외조명(한글)
+    save_file.append(a)
+    return a
+
+def extract_sub_data(i, save_file):
+    # 호내 위상이 '자'인 데이터
+        # 빈칸을 채워줄 데이터
+    # 호내 위상이 그 외인 데이터
+        # 그냥 그대로 저장할 데이터
     # hoid
     a = [str(i[4].value).split('.')[0] + str(i[2].value).split('.')[0] + "-" + str(i[8].value.split('.')[0]) \
          + str(i[11].value).split('.')[0] + str(i[13].value).split('.')[0]]
@@ -29,6 +63,7 @@ def extract_data(i, save_file):
     save_file.append(a)
 
 def extract_xlsx(file, main_hoid_output1, main_hoid_output2, other_hoid_output, static_output, all_hoid_output):
+    global main_ho
     # target file open
     # 하나 배웠다, data_only안하면 cell에 써져있는 그대로 가져오고
     # data only하면 출력되는 모습 그대로 가져오는 듯 하다
@@ -41,12 +76,14 @@ def extract_xlsx(file, main_hoid_output1, main_hoid_output2, other_hoid_output, 
     for i in sheet.rows:
         if "주호" in str(i[17].value):
             if i[22].value != None and "x" not in i[22].value and i[23].value != None and "x" not in i[23].value and i[42].value == None:
-                extract_data(i, main_hoid_output1)
+                #주호-사용할 수 있는 값
+                main_ho = extract_data(i, main_hoid_output1)
             else:
+                #주호-쓰레기 값
                 extract_data(i, main_hoid_output2)
         else:
             # hoid
-            extract_data(i, other_hoid_output)
+            extract_sub_data(i, other_hoid_output)
         extract_data(i, all_hoid_output)
 
         # static
