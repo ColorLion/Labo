@@ -24,15 +24,15 @@ def main():
     ws2 = xlsx2.active
 
     data = []
-    first_row = ["seq", "성", "명", "출생년도", "간지", "주성명", "부명(한자)", "부명(한글)", \
-                 "모명(한자)", "모명(한글)", "조명(한자)", "조명(한글)", "증조명(한자)", \
-                 "증조명(한글)", "외조명(한자)", "외조명(한글)"]
+    first_row = ["seq", "성(한자)", "명(한자)" ,"성(한글)", "명(한글)", "출생년도", "간지", "주성명", \
+                 "부명(한자)", "부명(한글)", "모명(한자)", "모명(한글)", "조명(한자)", "조명(한글)", \
+                 "증조명(한자)", "증조명(한글)", "외조명(한자)", "외조명(한글)"]
     ws2.append(first_row)
     for i in ws1.rows:
         tmp = [""] + [i[2].value] + [i[3].value] + [i[4].value] + [i[5].value] \
                     + [i[6].value] + [i[7].value] + [i[8].value] + [i[9].value] \
                     + [i[10].value] + [i[11].value] + [i[12].value] + [i[13].value] \
-                    + [i[14].value] + [i[15].value] + [i[16].value]
+                    + [i[14].value] + [i[15].value] + [i[16].value] + [i[17].value] + [i[18].value]
         if tmp not in data:
             data.append(tmp)
         else:

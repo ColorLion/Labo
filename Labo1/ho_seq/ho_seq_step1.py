@@ -10,8 +10,10 @@ def extract_data(i, save_file):
     # 직역은 변경될 가능성이 있으니 지금은 배제하도록 하자
     # a.append(i[19].value) # 직역(한글)
     a.append(i[17].value)  # 호내위상
-    a.append(i[22].value)  # 성
-    a.append(i[23].value)  # 명
+    a.append(i[20].value)  # 성(한자)
+    a.append(i[21].value)  # 명(한자)
+    a.append(i[22].value)  # 성(한글)
+    a.append(i[23].value)  # 명(한글)
     if type(i[24].value) == int:  # 출생년도
         a.append(i[4].value - i[24].value)
     else:
@@ -32,35 +34,66 @@ def extract_data(i, save_file):
     return a
 
 def extract_sub_data(i, save_file):
+    global main_ho
     # 호내 위상이 '자'인 데이터
+    #print(main_ho)
+    if i[17].value == "자":
         # 빈칸을 채워줄 데이터
+        a = [str(i[4].value).split('.')[0] + str(i[2].value).split('.')[0] + "-" + str(i[8].value.split('.')[0]) \
+             + str(i[11].value).split('.')[0] + str(i[13].value).split('.')[0]]
+        #print(a[0] + str(i[22].value) + str(i[23].value) + str(main_ho[4]))
+        #print(main_ho)
+        a.append(i[17].value)  # 호내위상
+        a.append(main_ho[2])  # 성(한자)
+        a.append(i[21].value)  # 명(한자)
+        a.append(main_ho[4])  # 성(한글)
+        a.append(i[23].value)  # 명(한글)
+        if type(i[24].value) == int:  # 출생년도
+            a.append(i[4].value - i[24].value)
+        else:
+            a.append(i[24].value)
+        a.append(i[26].value)  # 간지(한글)
+        a.append(i[42].value)  # 주성명, 노비인 경우에 사용
+        a.append(str(main_ho[3]))  # 부명(한자)
+        a.append(str(main_ho[5]))  # 부명(한글)
+        a.append(i[49].value)  # 모명(한자)
+        a.append(i[50].value)  # 모명(한글)
+        a.append(i[54].value)  # 조명(한자)
+        a.append(i[55].value)  # 조명(한글)
+        a.append(i[58].value)  # 증조명(한자)
+        a.append(i[59].value)  # 증조명(한글)
+        a.append(i[62].value)  # 외조명(한글)
+        a.append(i[63].value)  # 외조명(한글)
+        save_file.append(a)
     # 호내 위상이 그 외인 데이터
-        # 그냥 그대로 저장할 데이터
-    # hoid
-    a = [str(i[4].value).split('.')[0] + str(i[2].value).split('.')[0] + "-" + str(i[8].value.split('.')[0]) \
-         + str(i[11].value).split('.')[0] + str(i[13].value).split('.')[0]]
-    # 직역은 변경될 가능성이 있으니 지금은 배제하도록 하자
-    # a.append(i[19].value) # 직역(한글)
-    a.append(i[17].value)  # 호내위상
-    a.append(i[22].value)  # 성
-    a.append(i[23].value)  # 명
-    if type(i[24].value) == int:  # 출생년도
-        a.append(i[4].value - i[24].value)
     else:
-        a.append(i[24].value)
-    a.append(i[26].value)  # 간지(한글)
-    a.append(i[42].value)  # 주성명, 노비인 경우에 사용
-    a.append(i[45].value)  # 부명(한자)
-    a.append(i[46].value)  # 부명(한글)
-    a.append(i[49].value)  # 모명(한자)
-    a.append(i[50].value)  # 모명(한글)
-    a.append(i[54].value)  # 조명(한자)
-    a.append(i[55].value)  # 조명(한글)
-    a.append(i[58].value)  # 증조명(한자)
-    a.append(i[59].value)  # 증조명(한글)
-    a.append(i[62].value)  # 외조명(한글)
-    a.append(i[63].value)  # 외조명(한글)
-    save_file.append(a)
+        # 그냥 그대로 저장할 데이터
+        a = [str(i[4].value).split('.')[0] + str(i[2].value).split('.')[0] + "-" + str(i[8].value.split('.')[0]) \
+             + str(i[11].value).split('.')[0] + str(i[13].value).split('.')[0]]
+        # 직역은 변경될 가능성이 있으니 지금은 배제하도록 하자
+        # a.append(i[19].value) # 직역(한글)
+        a.append(i[17].value)  # 호내위상
+        a.append(i[20].value)  # 성(한자)
+        a.append(i[21].value)  # 명(한자)
+        a.append(i[22].value)  # 성(한글)
+        a.append(i[23].value)  # 명(한글)
+        if type(i[24].value) == int:  # 출생년도
+            a.append(i[4].value - i[24].value)
+        else:
+            a.append(i[24].value)
+        a.append(i[26].value)  # 간지(한글)
+        a.append(i[42].value)  # 주성명, 노비인 경우에 사용
+        a.append(i[45].value)  # 부명(한자)
+        a.append(i[46].value)  # 부명(한글)
+        a.append(i[49].value)  # 모명(한자)
+        a.append(i[50].value)  # 모명(한글)
+        a.append(i[54].value)  # 조명(한자)
+        a.append(i[55].value)  # 조명(한글)
+        a.append(i[58].value)  # 증조명(한자)
+        a.append(i[59].value)  # 증조명(한글)
+        a.append(i[62].value)  # 외조명(한글)
+        a.append(i[63].value)  # 외조명(한글)
+        save_file.append(a)
 
 def extract_xlsx(file, main_hoid_output1, main_hoid_output2, other_hoid_output, static_output, all_hoid_output):
     global main_ho
@@ -74,13 +107,15 @@ def extract_xlsx(file, main_hoid_output1, main_hoid_output2, other_hoid_output, 
     static_count = [file, 0, 0, 0, 0, 0]
 
     for i in sheet.rows:
+        #if i[0].value == "原本":
+        #    continue
         if "주호" in str(i[17].value):
             if i[22].value != None and "x" not in i[22].value and i[23].value != None and "x" not in i[23].value and i[42].value == None:
                 #주호-사용할 수 있는 값
                 main_ho = extract_data(i, main_hoid_output1)
             else:
                 #주호-쓰레기 값
-                extract_data(i, main_hoid_output2)
+                main_ho = extract_data(i, main_hoid_output2)
         else:
             # hoid
             extract_sub_data(i, other_hoid_output)
