@@ -179,7 +179,6 @@ def main():
     if os.path.isdir(all_id_dir) == 0:
         os.mkdir(all_id_dir)
 
-
     files = os.listdir(work_dir)
 
     for file in files:
@@ -187,7 +186,6 @@ def main():
             if file.split('.')[1] == 'xlsx':
                 print(file)
                 extract_xlsx(file, main_hoid_output1, main_hoid_output2, other_hoid_output, static_output, all_hoid_output)
-
 
     xlsx1.save(save_file_mho1)
     xlsx2.save(save_file_oth)
