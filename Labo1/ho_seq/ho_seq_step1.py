@@ -36,7 +36,7 @@ def extract_data(i, save_file):
 def extract_sub_data(i, save_file):
     global main_ho
     # 호내 위상이 '자'인 데이터
-    #print(main_ho)
+    print(main_ho)
     if i[17].value == "자":
         # 빈칸을 채워줄 데이터
         a = [str(i[4].value).split('.')[0] + str(i[2].value).split('.')[0] + "-" + str(i[8].value.split('.')[0]) \
@@ -53,7 +53,7 @@ def extract_sub_data(i, save_file):
         else:
             a.append(i[24].value)
         a.append(i[26].value)  # 간지(한글)
-        a.append(i[42].value)  # 주성명, 노비인 경우에 사용
+        a.append(main_ho[8])  # 주성명, 노비인 경우에 사용
         a.append(str(main_ho[3]))  # 부명(한자)
         a.append(str(main_ho[5]))  # 부명(한글)
         a.append(i[49].value)  # 모명(한자)
@@ -107,9 +107,9 @@ def extract_xlsx(file, main_hoid_output1, main_hoid_output2, other_hoid_output, 
     static_count = [file, 0, 0, 0, 0, 0]
 
     for i in sheet.rows:
-        #if i[0].value == "原本":
-        #    continue
-        if "주호" in str(i[17].value):
+        if i[0].value == "原本":
+            continue
+        elif "주호" in str(i[17].value):
             if i[22].value != None and "x" not in i[22].value and i[23].value != None and "x" not in i[23].value and i[42].value == None:
                 #주호-사용할 수 있는 값
                 main_ho = extract_data(i, main_hoid_output1)

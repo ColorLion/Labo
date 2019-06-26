@@ -39,7 +39,6 @@ def main():
             dup_data += 1
         seq += 1
 
-
     for i in range(len(data)):
         ws2.append(data[i])
 
