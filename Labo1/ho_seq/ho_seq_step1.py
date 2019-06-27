@@ -5,8 +5,9 @@ main_ho = []
 
 def extract_data(i, save_file):
     # hoid
-    a = [str(i[4].value).split('.')[0] + str(i[2].value).split('.')[0] + "-" + str(i[8].value.split('.')[0]) \
-         + str(i[11].value).split('.')[0] + str(i[13].value).split('.')[0]]
+    a = [str(i[4].value).split('.')[0] + str(i[2].value).split('.')[0] + \
+         "-" + str(i[8].value.split('.')[0]) + str(i[11].value).split('.')[0] + \
+         str(i[13].value).split('.')[0]]
     # 직역은 변경될 가능성이 있으니 지금은 배제하도록 하자
     # a.append(i[19].value) # 직역(한글)
     a.append(i[17].value)  # 호내위상
@@ -69,8 +70,9 @@ def extract_sub_data(i, save_file):
     # 호내 위상이 그 외인 데이터
     else:
         # 그냥 그대로 저장할 데이터
-        a = [str(i[4].value).split('.')[0] + str(i[2].value).split('.')[0] + "-" + str(i[8].value.split('.')[0]) \
-             + str(i[11].value).split('.')[0] + str(i[13].value).split('.')[0]]
+        a = [str(i[4].value).split('.')[0] + str(i[2].value).split('.')[0] + "-" + \
+             str(i[8].value.split('.')[0]) + str(i[11].value).split('.')[0] + \
+             str(i[13].value).split('.')[0]]
         # 직역은 변경될 가능성이 있으니 지금은 배제하도록 하자
         # a.append(i[19].value) # 직역(한글)
         a.append(i[17].value)  # 호내위상
