@@ -36,7 +36,7 @@ def extract_data(i, save_file):
 def extract_sub_data(i, save_file):
     global main_ho
     # 호내 위상이 '자'인 데이터
-    print(main_ho)
+    #print(main_ho)
     if i[17].value == "자":
         # 빈칸을 채워줄 데이터
         a = [str(i[4].value).split('.')[0] + str(i[2].value).split('.')[0] + "-" + str(i[8].value.split('.')[0]) \
