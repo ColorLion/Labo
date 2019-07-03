@@ -1,7 +1,7 @@
 import os.path
 import openpyxl
 
-main_ho = []
+# for Statics
 
 def extract_data(i, save_file):
     # 추출 데이터
@@ -29,18 +29,40 @@ def extract_data(i, save_file):
     save_file.append(a)
     #return a
 
-def gather_static(file, i, save_file1):
-    print("gather static")
+def gather_static(i, job_ho_info, main_ho_info):
+    # 기본 통계
+    job_ho_info[1] += 1
+    job = i[18].value
+    if job == None:
+        job_ho_info[4] += 1
+    elif '奴' in job or '婢' in job:
+        job_ho_info[3] += 1
+    elif 'x' in job:
+        job_ho_info[5] += 1
+    else:
+        job_ho_info[2] += 1
+        
+    # 호 관련 통계
+    if i[17].value == "주호":
+        main_ho_info[1] += 1
+        if job == None:
+            main_ho_info[4] += 1
+        elif '奴' in job or '婢' in job:
+            main_ho_info[3] += 1
+        elif 'x' in job:
+            main_ho_info[5] += 1
+        else:
+            main_ho_info[2] += 1
 
-
-def extract_xlsx(file, main_hoid_output, static_output):
-    global main_ho
+def extract_xlsx(file, main_hoid_output, static_output1, static_output2):
     # target file open
     xlsx = openpyxl.load_workbook(filename=file, data_only=True)
     sheet = xlsx['Sheet']
 
-    # static_first = ["file_name", "ALL", "평민 이상", "노비", "공백", "x포함"]
-    static_count = [file, 0, 0, 0, 0, 0]
+    # static_first1 = ["file_name", "전체 인물 수", "노비가 아닌 사람 수", "노비", "직역이 빈칸인 사람 수", "직역에 x가 포함된 사람 수"]
+    job_ho_info = [file.split('-')[0], 0, 0, 0, 0, 0]
+    # static_first2 = ["연도", "전체 호의 수", "노비가 아닌 주호의 수", "노비인 주호의 수", "직역이 비어있는 주호", "직역에 x가 포함된 주호"]
+    main_ho_info = [file.split('-')[0], 0, 0, 0, 0, 0]
 
     for i in sheet.rows:
         # 첫 번째 줄 처리
@@ -48,19 +70,11 @@ def extract_xlsx(file, main_hoid_output, static_output):
             continue
         else:
             extract_data(i, main_hoid_output)
+        # Static
+        gather_static(i, job_ho_info, main_ho_info)
 
-        static_count[1] += 1
-        job = i[18].value
-        if job == None:
-            static_count[4] += 1
-        elif '奴' in job or '婢' in job:
-            static_count[3] += 1
-        elif 'x' in job:
-            static_count[5] += 1
-        else:
-            static_count[2] += 1
-
-    static_output.append(static_count)
+    static_output1.append(job_ho_info)
+    static_output2.append(main_ho_info)
 
 def main():
     # 작업 위치 및 저장 위치 정의
@@ -83,8 +97,12 @@ def main():
     xlsx2 = openpyxl.Workbook()
     static_output1 = xlsx2.active
     static_output1.title = "기본 통계자료"
-    static_first = ["file_name", "ALL", "평민 이상", "노비", "공백", "x포함"]
-    static_output1.append(static_first)
+    static_first1 = ["연도", "전체 인물 수", "노비가 아닌 사람 수", "노비", "직역이 빈칸인 사람 수", "직역에 x가 포함된 사람 수"]
+    static_output2 = xlsx2.create_sheet()
+    static_output2.title = "호 통계 자료"
+    static_first2 = ["연도", "전체 호의 수", "노비가 아닌 주호의 수", "노비인 주호의 수", "직역이 비어있는 주호", "직역에 x가 포함된 주호"]
+    static_output1.append(static_first1)
+    static_output2.append(static_first2)
 
     # output 저장 폴더 확인
     if os.path.isdir(main_id_dir) == 0:
@@ -98,7 +116,7 @@ def main():
         if len(file.split('.')) == 2:
             if file.split('.')[1] == 'xlsx':
                 print(file)
-                extract_xlsx(file, main_hoid_output, static_output1)
+                extract_xlsx(file, main_hoid_output, static_output1, static_output2)
 
     xlsx1.save(save_file_ho)
     xlsx2.save(save_file_static)
