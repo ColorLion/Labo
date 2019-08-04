@@ -2,8 +2,10 @@ import os.path
 import openpyxl
 
 # for Statics
+main_ho = []
 
 def extract_data(i, save_file):
+    global main_ho
     # 추출 데이터
         # 성/명(한자, 한글), 출생년도, 간지, 년도, 이순, 통, 호 면명, 리명
     a = [i[4].value]                # 년도
@@ -26,6 +28,12 @@ def extract_data(i, save_file):
     a.append(i[25].value)           # 간지(한자)
     a.append(i[26].value)           # 간지(한글)
 
+    if i[15] == "주호":
+        main_ho = a
+
+    if i[17] == "자":
+        i[20] = main_ho[20]
+        i[22] = main_ho[22]
     save_file.append(a)
     #return a
 
