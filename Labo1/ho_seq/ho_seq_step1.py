@@ -3,12 +3,16 @@ import openpyxl
 
 # for Statics
 main_ho = []
+id = []
+hoid = 0
 
 def extract_data(i, save_file):
     global main_ho
+    global hoid
     # 추출 데이터
         # 성/명(한자, 한글), 출생년도, 간지, 년도, 이순, 통, 호 면명, 리명
-    a = [i[4].value]                # 년도
+    a = [hoid]
+    a.append(i[4].value)            # 년도
     a.append(i[6].value)            # 면명
     a.append(i[10].value)           # 리명
     a.append(i[8].value)            # 이순
@@ -28,14 +32,15 @@ def extract_data(i, save_file):
     a.append(i[25].value)           # 간지(한자)
     a.append(i[26].value)           # 간지(한글)
 
-    if i[15] == "주호":
+    if i[17].value == "주호":
+        hoid += 1
+        a[0] = hoid
         main_ho = a
 
-    if i[17] == "자":
-        i[20] = main_ho[20]
-        i[22] = main_ho[22]
+    if i[17].value == "자":
+        a[9] = main_ho[9]
+        a[11] = main_ho[11]
     save_file.append(a)
-    #return a
 
 def gather_static(i, job_ho_info, main_ho_info):
     # 기본 통계
@@ -96,7 +101,7 @@ def main():
 
     # report나올 것
     xlsx1 = openpyxl.Workbook()
-    ho_first = ["연도", "면명", "리명", "이순", "통", "호", "주호(한자)", "주호(한글)", "성(한자)", \
+    ho_first = ["id", "연도", "면명", "리명", "이순", "통", "호", "주호(한자)", "주호(한글)", "성(한자)", \
                "명(한자)", "성(한글)", "명(한글)", "호내위상", "출생년도", "간지(한자)", "간지(한글)"]
     main_hoid_output = xlsx1.active
     main_hoid_output.append(ho_first)

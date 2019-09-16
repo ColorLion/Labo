@@ -1,17 +1,11 @@
-sql
+mho
+SELECT `mhoid`.`id`, `mho`.* FROM `mhoid`, `mho` WHERE `mhoid`.`주호한자` = `mho`.`주호한자` AND `mhoid`.`주호한글` = `mho`.`주호한글` AND `mhoid`.`성한자` = `mho`.`성한자` AND `mhoid`.`명한자` = `mho`.`명한자` AND `mhoid`.`성한글` = `mho`.`성한글` AND `mhoid`.`명한글` = `mho`.`명한글` AND `mhoid`.`출생년도` = `mho`.`출생년도` AND `mhoid`.`간지한자` = `mhoid`.`간지한자` and `mhoid`.`간지한글` = `mho`.`간지한글`
 
-SELECT * FROM `주호` GROUP BY `주호(한자)`, `주호(한글)`, `성(한자)`,`명(한자)`,`성(한글)`,`명(한글)`,`출생년도`,`간지(한자)`,`간지(한글)` HAVING COUNT(*) = 1
+mhoid
+SELECT *, count(*) as cnt FROM `mho` GROUP BY `주호한자`, `주호한글`, `성한자`,`명한자`,`성한글`,`명한글`,`출생년도`,`간지한자`,`간지한글` HAVING (`주호한글` IN (SELECT `주호한글` FROM `mho` AS Tmp GROUP BY `주호한자`,'주호한글',`성한자`,`명한자`,`성한글`,`명한글`,`출생년도`,`간지한자`,`간지한글`))
 
-- 중복제거 및 숫자
-SELECT *, count(*) as cnt FROM `주호_1` GROUP BY `주호(한자)`, `주호(한글)`, `성(한자)`,`명(한자)`,`성(한글)`,`명(한글)`,`출생년도`,`간지(한자)`,`간지(한글)` HAVING (`명(한글)` IN (SELECT `명(한글)` FROM `주호` AS Tmp GROUP BY `성(한자)`,`명(한자)`,`성(한글)`,`명(한글)`,`출생년도` HAVING COUNT(*) >1))
+idchain
+SELECT `mhoid`.`id`, `mho`.* FROM `mhoid`, `hoid` WHERE ``mhoid`.`주호한자` = `mho`.`주호한자` AND `mhoid`.`주호한글` = `mho`.`주호한글` AND `mhoid`.`성한자` = `mho`.`성한자` AND `mhoid`.`성한글` = `mho`.`성한글` AND `mhoid`.`명한자` = `mho`.`명한자` AND `mhoid`.`명한글` = `mho`.`명한글` AND `mhoid`.`출생년도` = `mho`.`출생년도` AND `mhoid`.`간지한자` = `mho`.`간지한자` AND `mhoid`.`간지한글` = `mho`.`간지한글`
 
-SELECT (SELECT `id` FROM `주호_1` WHERE `주호_1`.`성(한자)` = `주호`.`성(한자)` AND `주호_1`.`명(한자)` = `주호`.`명(한자)`) AS id, * FROM `주호` WHERE 1
-
-SELECT `주호_1`.`id`, `주호`.`연도`, `주호`.`면명`, `주호`.`리명`, `주호`.`이순` FROM `주호_1`, `주호` WHERE `주호_1`.`성(한자)` = `주호`.`성(한자)` AND `주호_1`.`명(한자)` = `주호`.`명(한자)`
-
-SELECT `주호_1`.`id`, `주호`.* FROM `주호_1`, `주호` WHERE `주호_1`.`성(한자)` = `주호`.`성(한자)` AND `주호_1`.`명(한자)` = `주호`.`명(한자)`
-
-이거 최종
-SELECT `주호id_1`.`id`, `주호`.* FROM `주호id_1`, `주호` WHERE `주호id_1`.`성(한자)` = `주호`.`성(한자)` AND `주호id_1`.`명(한자)` = `주호`.`명(한자)` AND `주호id_1`.`성(한글)` = `주호`.`성(한글)` AND `주호id_1`.`명(한글)` = `주호`.`명(한글)` AND `주호id_1`.`출생년도` = `주호`.`출생년도` AND `주호id_1`.`간지(한자)` = `주호id_1`.`간지(한자)` and `주호id_1`.`간지(한글)` = `주호`.`간지(한글)`
-
-CREATE ALGORITHM = UNDEFINED VIEW `주호id_1` AS SELECT *, count(*) as cnt FROM `주호_1` GROUP BY `주호(한자)`, `주호(한글)`, `성(한자)`,`명(한자)`,`성(한글)`,`명(한글)`,`출생년도`,`간지(한자)`,`간지(한글)` ORDER BY `주호_1`.`id` ASC
+end
+SELECT `idchain`.`globalid`, `hoid`.* FROM `hoid`, `idchain` WHERE `idchain`.`regionid` = `hoid`.`id`
