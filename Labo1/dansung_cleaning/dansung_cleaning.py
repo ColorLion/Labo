@@ -4,7 +4,7 @@ import openpyxl
 
 # 통계용 전역 변수
 # [년도, 숫자]
-STATIC_JA = [0, 0]
+STATIC_JA = [0, 0, 0]
 # [년도, allho, 1st, oth]
 STATIC_HO = [0, 0, 0, 0]
 # [년도, all, 1st, oth]
@@ -65,6 +65,7 @@ def extract_data(file, st_dir, oth_dir, sheet_static, sheet_ho, sheet_ja):
     target = xlrd.open_workbook(file, formatting_info=True)
 
     ws = target.sheet_by_index(0)
+    print(ws.nrows)
 
     st_row = ws.row_values(0)
     st_row.insert(0, "ID")
@@ -90,7 +91,10 @@ def extract_data(file, st_dir, oth_dir, sheet_static, sheet_ho, sheet_ja):
                 STATIC_HO[3] += 1
 
         # 호내 위상이 '자'인 데이터의 '성(한자)', '성(한글)'부분을 채워 넣을 것
-        if data[17] == "자" and MAIN_HO[20] and MAIN_HO[22]:
+        if data[17] == "자" and data[20] and data[22]:
+            STATIC_JA[2] += 1
+            pass
+        elif data[17] == "자" and MAIN_HO[20] and MAIN_HO[22]:
             STATIC_JA[1] += 1
             data[20] = MAIN_HO[20]
             data[22] = MAIN_HO[22]
@@ -122,7 +126,7 @@ def extract_data(file, st_dir, oth_dir, sheet_static, sheet_ho, sheet_ja):
 
     # static 전역변수 초기화
     STATIC_HO = [0, 0, 0, 0]
-    STATIC_JA = [0, 0]
+    STATIC_JA = [0, 0, 0]
     STATIC_FILE = [0, 0, 0, 0]
 
 def main():
@@ -154,7 +158,7 @@ def main():
 
     sheet_ja = xlsx_static.create_sheet()
     sheet_ja.title = "JA"
-    sheet_ja.append(["연도", "성이 붙은 자"])
+    sheet_ja.append(["연도", "성이 붙은 자", "본인의 성이 있는 자"])
 
     # 폴더 내에 있는 xls 파일을 순차적으로 읽음
     for file in files:
