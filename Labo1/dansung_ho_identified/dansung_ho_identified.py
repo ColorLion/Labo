@@ -40,6 +40,7 @@ def extract_xlsx(file, main_hoid_output):
         else:
             extract_data(i, main_hoid_output)
 
+
 def main():
     # 작업 위치 및 저장 위치 정의
     work_dir = os.getcwd()
